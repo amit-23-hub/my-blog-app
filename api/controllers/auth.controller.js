@@ -1,14 +1,15 @@
 import User from "../model/user.model";
 
 import bcryptjs   from 'bcryptjs';
+import { errorHandler } from "../utils/error";
 
-export const signup = async(req,res)=>{
+export const signup = async(req,res , next)=>{
     const {username , email , password } = req.body ;
 
 
     if(!username || !email || !password || username === '' || email === '' || password === ''){
 
-        return res.status(400).json({massage:'all feild are require '} ) ;
+       next(errorHandler(400,'all feild require')) ;
     }
 
 
@@ -25,7 +26,7 @@ export const signup = async(req,res)=>{
     res.json({message : "sign up  successfully"}) ; 
         
     } catch (error) {
-        res.status(500).json({message:error.massage});
+      next(error) ;
     }
 
 
